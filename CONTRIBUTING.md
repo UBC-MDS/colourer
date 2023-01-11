@@ -1,7 +1,12 @@
 # Contributing
 
-Contributions are welcome, and they are greatly appreciated! Every little bit
-helps, and credit will always be given.
+`colourpycker` is an open source project. Contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given. Our team has final say over what gets merged to this project.
+
+Team Members: Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk, Lauren Zung
+
+## Contributor Agreement
+
+By contributing, you agree that we may redistribute your work under [our license](https://github.com/UBC-MDS/colourpycker/blob/main/LICENSE). In exchange, we will address your issues and/or assess your change proposal as promptly as we can, and help you become a member of our community. Everyone involved in `colourpycker` agrees to abide by our code of conduct.
 
 ## Types of Contributions
 
