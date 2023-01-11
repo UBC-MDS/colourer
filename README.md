@@ -4,7 +4,7 @@ A Python package that can be used to extract colours from images for use in data
 
 ## Overview
 
-This package allows users to integrate unique colour palettes into their graphs for exploratory data analysis. The colours are retrieved from image data (via URL) and are selected based on their overall prominence in the picture. While there are existing tools that are used to process images and create figures independently, we aim to combine both of their functionalities to help programmers easily design effective and creative visualizations.
+This package allows users to integrate unique colour palettes into their graphs for exploratory data analysis. The colours are retrieved from image data (via URL) and are selected based on their overall prominence in a picture. While there are existing tools that are used to process images and create figures independently, we aim to combine both of their functionalities to help programmers easily design effective and creative visualizations.
 
 ## Installation
 
@@ -13,6 +13,14 @@ $ pip install colourpycker
 ```
 
 ## Functions
+
+`img_hex()`
+
+`img_pie()`
+
+`img_scatter()`
+
+`img_negative()`
 
 ## Usage
 
