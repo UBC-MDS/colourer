@@ -31,13 +31,3 @@ def img_negative(input_img, num_colours=1, tolerance=10):
     --------
     >>> img_negative("https://t3.ftcdn.net/jpg/02/70/35/00/360_F_270350073_WO6yQAdptEnAhYKM5GuA9035wbRnVJSr.jpg", num_colours=3, tolerance=20)
     """
-    # Load image
-    # img = Image.open(urlopen(input_img))
-    # colors, pixel_count = extcolors.extract_from_image(img)
-    # print(colors)
-    # print(pixel_count)
-
-    # Resize image
-
-    # plt.imshow(img)
-    # plt.show()
