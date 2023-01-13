@@ -17,8 +17,8 @@ def scatterplot(url, dataset, x, y, fill):
     ----------
     url : str
         url of the image to extract colours
-    dataset : str
-        csv file of the dataset to plot
+    dataset : pandas.DataFrame
+        the dataset to plot (already imported)
     x: str
         the data to plot on the x-axis
     y: str
@@ -33,5 +33,5 @@ def scatterplot(url, dataset, x, y, fill):
     
     Examples
     --------
-    scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 'penguins.csv', 'bill_length_mm', 'body_mass_g', 'species')
+    scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species')
     """
