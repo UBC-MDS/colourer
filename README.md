@@ -23,17 +23,16 @@ Therefore, we are developing `colourpycker` to bridge this gap.
 ## Installation
 
 ```bash
-$ pip install colourpycker
+pip install colourpycker
 ```
 
 ## Functions
 
-`img_hex()`
+`get_color_palette(img_url, tolerance, limit)`: This function extracts the most common colors from an image and returns them as a data frame of hex color codes and RGB values. The user is provided with the ability to set tolerance while picking colors, along with the number of colors that should be returned.
 
 `donut(img_url, num_clrs, img_size)`: This function creates a donut chart with information on the $n$ most common colors in the linked image. The user specifies the image, the number of colors, and specifies the size of the resulting chart.
 
 `scatterplot(url, dataset, x, y, fill)`: Creates a simple scatterplot using the colours select from the image based on a dataset of the users choosing.
-    
 
 `img_negative(img_url, num_colours=1, tolerance=10)`: extracts the most common $n$ colours from an image (via URL) and inverts them to retrieve the negative version of a colour palette, returning the associated HEX codes and proportions in the image
 
