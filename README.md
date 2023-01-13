@@ -20,7 +20,7 @@ $ pip install colourpycker
 
 `img_scatter()`
 
-`img_negative()`
+`img_negative(img_url, num_colours=1, tolerance=10)`: extracts the most common $n$ colours from an image (via URL) and inverts them to retrieve the negative version of a colour palette, returning the associated HEX codes and proportions in the image
 
 ## Usage
 
