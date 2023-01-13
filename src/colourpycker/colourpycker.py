@@ -88,14 +88,16 @@ def scatterplot(url, dataset, x, y, fill):
     """
 
 
-def img_negative(input_img, num_colours=1, tolerance=10):
+def negative(img_url, num_colours=1, tolerance=10):
     """Invert top n colours in an image file.
 
-    Colours are extracted from an image via URL
+    Colours are extracted from an image via URL and reversed,
+    (e.g. red becomes cyan, green becomes magenta, yellow becomes blue)
+    then stored in a table as HEX codes and RGB values
 
     Parameters
     ----------
-    input_img : str
+    img_url : str
         URL of an image file.
 
     num_colours : int
@@ -107,9 +109,9 @@ def img_negative(input_img, num_colours=1, tolerance=10):
     Returns
     -------
     pandas.DataFrame
-        a table of the top n inverted colours in the image, including their HEX codes and occurrence (proportionate number of pixels)
+        a table of the top n inverted colours in the image, including their HEX codes and RGB values
 
     Examples
     --------
-    >>> img_negative("https://t3.ftcdn.net/jpg/02/70/35/00/360_F_270350073_WO6yQAdptEnAhYKM5GuA9035wbRnVJSr.jpg", num_colours=3, tolerance=20)
+    >>> negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 3, 20)
     """
