@@ -16,7 +16,7 @@ As mentioned, there are packages in Python that are capable of colour extraction
 
 [color-extraction](https://pypi.org/project/color-extraction/): This provides the most similar color for the pixels of an image from a palette of predefined colors.
 
-[Pylette](https://github.com/qTipTip/Pylette/): This extracts colours and creates a colour palette based on an input image. This palette can be dumped into a csv file that would need them to
+[Pylette](https://github.com/qTipTip/Pylette/): This extracts colours and creates a colour palette based on an input image. This palette can be dumped into a csv file that would then need to be processed for use in data visualizations.
 
 Therefore, we are developing `colourpycker` to bridge this gap.
 
