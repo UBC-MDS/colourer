@@ -18,7 +18,7 @@ $ pip install colourpycker
 
 `img_pie()`
 
-`scatterplot(url, x, y, fill, palatte)`: Creates a simple scatterplot using the colours select from the image based on a dataset of the users choosing.
+`scatterplot(url, dataset, x, y, fill)`: Creates a simple scatterplot using the colours select from the image based on a dataset of the users choosing.
     
 
 `img_negative()`
