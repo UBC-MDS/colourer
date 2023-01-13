@@ -6,7 +6,7 @@
 
 
 
-def scatterplot(data, x, y, fill, palatte):
+def scatterplot(url, x, y, fill, palatte):
     
     """Create a two-dimensional scatterplot based on the colours of the image
     
@@ -15,8 +15,8 @@ def scatterplot(data, x, y, fill, palatte):
     
     Parameters
     ----------
-    data : object
-        database to plot
+    url : str
+        url to csv of data to plot
     x: str
         the data to plot on the x-axis
     y: str
@@ -28,7 +28,7 @@ def scatterplot(data, x, y, fill, palatte):
     
     Returns
     ----------
-    colourpycker.scatterplot
+    altair.vegalite.v4.api.Chart
         Scatterplot using image colours.
     
     Examples
