@@ -28,14 +28,13 @@ $ pip install colourpycker
 
 ## Functions
 
-`img_hex()`
+`get_color_palette(img_url, tolerance, limit)`: This function extracts the most common colors from an image and returns them as a data frame of hex color codes and RGB values. The user is provided with the ability to set tolerance while picking colors, along with the number of colors that should be returned.
 
 `donut(img_url, num_clrs, img_size)`: This function creates a donut chart with information on the $n$ most common colors in the linked image. The user specifies the image, the number of colors, and specifies the size of the resulting chart.
 
-`scatterplot(url, dataset, x, y, fill)`: Creates a simple scatterplot using the colours select from the image based on a dataset of the users choosing.
-    
+`scatterplot(url, dataset, x, y, fill)`: This function creates a simple scatterplot using the colours select from the image based on a dataset of the users choosing.
 
-`img_negative(img_url, num_colours=1, tolerance=10)`: extracts the most common $n$ colours from an image (via URL) and inverts them to retrieve the negative version of a colour palette, returning the associated HEX codes and proportions in the image
+`negative(img_url, num_colours, tolerance)`: This function extracts the most common $n$ colours from an image (via URL) and inverts them to retrieve the negative version of a colour palette, returning the associated HEX codes and RGB values for each colour.
 
 ## Usage
 
@@ -43,7 +42,7 @@ $ pip install colourpycker
 
 ## Contributing
 
-Interested in contributing? Check out the [contributing guidelines](https://github.com/UBC-MDS/colourpycker/blob/main/CONTRIBUTING.md). Please note that this project is released with a [Code of Conduct](https://github.com/UBC-MDS/colourpycker/blob/main/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Interested in contributing? Check out the [contributing guidelines](https://github.com/UBC-MDS/colourpycker/blob/main/CONTRIBUTING.md) and [list of contributors](https://github.com/UBC-MDS/colourpycker/blob/main/CONTRIBUTORS.md) who worked on this project. Please note that this project is released with a [Code of Conduct](https://github.com/UBC-MDS/colourpycker/blob/main/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 ## License
 
