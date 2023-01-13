@@ -33,5 +33,5 @@ def scatterplot(url, dataset, x, y, fill):
     
     Examples
     --------
-    scatterplot('image.jpg', 'penguins.csv', 'bill_length_mm', 'body_mass_g', 'species')
+    scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 'penguins.csv', 'bill_length_mm', 'body_mass_g', 'species')
     """
