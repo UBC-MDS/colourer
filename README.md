@@ -18,9 +18,10 @@ $ pip install colourpycker
 
 `donut(img_url, num_clrs, img_size)`: This function creates a donut chart with information on the $n$ most common colors in the linked image. The user specifies the image, the number of colors, and specifies the size of the resulting chart.
 
-`img_scatter()`
+`scatterplot(url, dataset, x, y, fill)`: Creates a simple scatterplot using the colours select from the image based on a dataset of the users choosing.
+    
 
-`img_negative()`
+`img_negative(img_url, num_colours=1, tolerance=10)`: extracts the most common $n$ colours from an image (via URL) and inverts them to retrieve the negative version of a colour palette, returning the associated HEX codes and proportions in the image
 
 ## Usage
 
@@ -32,7 +33,7 @@ Interested in contributing? Check out the [contributing guidelines](https://gith
 
 ## License
 
-`colourpycker` was created by Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk and Lauren Zung. It is licensed under the terms of the MIT license.
+`colourpycker` was created by Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk, and Lauren Zung. It is licensed under the terms of the MIT license.
 
 ## Credits
 

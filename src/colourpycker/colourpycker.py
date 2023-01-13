@@ -1,6 +1,9 @@
-
-
-
+import numpy as np
+import pandas as pd
+from PIL import Image
+from urllib.request import urlopen
+import matplotlib.pyplot as plt
+import extcolors
 
 
 def donut(img_url, num_clrs, img_size):
@@ -25,4 +28,59 @@ def donut(img_url, num_clrs, img_size):
     Examples
     --------
     donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 400)
+    """
+
+def scatterplot(url, dataset, x, y, fill):
+    """Create a two-dimensional scatterplot based on the colours of the image
+    
+    Creates a simple scatterplot using the colours selected from the image,
+    plotting two features from a dataset of the users choosing.
+    
+    Parameters
+    ----------
+    url : str
+        url of the image to extract colours
+    dataset : pandas.DataFrame
+        the dataset to plot (already imported)
+    x: str
+        the data to plot on the x-axis
+    y: str
+        the data to plot on the y-axis
+    fill: str
+        the data to use to fill in the points of the scatter plot
+        
+    Returns
+    ----------
+    altair.vegalite.v4.api.Chart
+        Scatterplot using image colours
+    
+    Examples
+    --------
+    scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species')
+    """
+
+def img_negative(input_img, num_colours=1, tolerance=10):
+    """Invert top n colours in an image file.
+
+    Colours are extracted from an image via URL, where the maximum
+
+    Parameters
+    ----------
+    input_img : str
+        URL of an image file.
+
+    num_colours : int
+        Number of colours to be extracted.
+
+    tolerance : int
+        Metric used to group colours together to give a better visual representation. Must be between 0 and 100.
+
+    Returns
+    -------
+    pandas.DataFrame
+        a table of the top n colours in the image, including their HEX codes and occurrence (proportionate number of pixels)
+
+    Examples
+    --------
+    >>> img_negative("https://t3.ftcdn.net/jpg/02/70/35/00/360_F_270350073_WO6yQAdptEnAhYKM5GuA9035wbRnVJSr.jpg", num_colours=3, tolerance=20)
     """
