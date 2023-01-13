@@ -16,7 +16,8 @@ $ pip install colourpycker
 
 `img_hex()`
 
-`img_pie()`
+`donut`: This function creates a donut chart with information on the n most common colors in the linked image. The user specifies the image, the number of colors, and specifies the size of the resulting chart.
+
 
 `img_scatter()`
 
