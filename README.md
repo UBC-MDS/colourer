@@ -10,9 +10,9 @@ This package allows users to integrate unique colour palettes into their graphs 
 
 As mentioned, there are packages in Python that are capable of colour extraction and data visualization, but none exist that combine the two functions to our knowledge. Some examples of such packages are as follows:
 
-[Pillow](https://pypi.org/project/Pillow/): This package adds image processing capabilities into Python interpreters. It can perform various image transformations but does not allow for colours to be extraction directly for further use.
+[Pillow](https://pypi.org/project/Pillow/): This package adds image processing capabilities into Python interpreters. It can perform various image transformations but does not allow for colours to be extracted directly for further use.
 
-[extcolors](https://pypi.org/project/extcolors/): This extracts RGB colour codes from images into text along with the occurrence rate. However, we would need to use additional packages to create plots of common colours in the image. This would also not allow us to invert them, or create a palette.
+[extcolors](https://pypi.org/project/extcolors/): This extracts RGB colour codes from images into text along with the occurrence rate (proportion of pixels). However, we would need to use additional packages to create plots using common colours in the image. This would also not allow us to invert them, or create a palette.
 
 [color-extraction](https://pypi.org/project/color-extraction/): This provides the most similar color for the pixels of an image from a palette of predefined colors.
 
