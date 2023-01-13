@@ -88,23 +88,22 @@ def scatterplot(url, dataset, x, y, fill):
     """
 
 
-def negative(img_url, num_colours=1, tolerance=10):
+def negative(img_url, num_colours=1, tolerance=100):
     """Invert top n colours in an image file.
 
     Colours are extracted from an image via URL and reversed,
     (e.g. red becomes cyan, green becomes magenta, yellow becomes blue)
-    then stored in a table as HEX codes and RGB values
+    then stored in a table as HEX codes and RGB values.
 
     Parameters
     ----------
     img_url : str
-        URL of an image file.
-
+        URL of an image file
     num_colours : int
-        Number of colours to be extracted.
-
+        number of colours to be extracted
     tolerance : int
-        Metric used to group colours together to give a better visual representation. Must be between 0 and 100.
+        number between 0 and 100 used to give better visual representation;
+        0 will not group any similar colours together, 100 will group all colours into one
 
     Returns
     -------
