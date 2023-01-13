@@ -32,7 +32,7 @@ Interested in contributing? Check out the [contributing guidelines](https://gith
 
 ## License
 
-`colourpycker` was created by Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk and Lauren Zung. It is licensed under the terms of the MIT license.
+`colourpycker` was created by Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk, and Lauren Zung. It is licensed under the terms of the MIT license.
 
 ## Credits
 
