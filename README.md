@@ -18,7 +18,8 @@ $ pip install colourpycker
 
 `img_pie()`
 
-`img_scatter()`
+`scatterplot(url, dataset, x, y, fill)`: Creates a simple scatterplot using the colours select from the image based on a dataset of the users choosing.
+    
 
 `img_negative(img_url, num_colours=1, tolerance=10)`: extracts the most common $n$ colours from an image (via URL) and inverts them to retrieve the negative version of a colour palette, returning the associated HEX codes and proportions in the image
 
