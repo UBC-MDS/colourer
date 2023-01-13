@@ -6,6 +6,18 @@ A Python package that can be used to extract colours from images for use in data
 
 This package allows users to integrate unique colour palettes into their graphs for exploratory data analysis. The colours are retrieved from image data (via URL) and are selected based on their overall prominence in a picture. While there are existing tools that are used to process images and create figures independently, we aim to combine both of their functionalities to help programmers easily design effective and creative visualizations.
 
+### Other similar Python libraries
+
+There are packages in python that do similar functionality, as certain functions, but these packages require more than one package in order to do everything that we would like to do. 
+
+For instance:
+
+[Extcolors](https://pypi.org/project/extcolors/): This provides a color extraction into text along with the occurrence rate. However, with this package, we would need to use additional packages to create plots of common colours in the image. As well, this would not allow us to invert them, or create a palette.
+
+[Color-extraction](https://pypi.org/project/color-extraction/): This provides the most similar color for the pixels of an image from a palette of predefined colors.
+
+[Pylette](https://github.com/qTipTip/Pylette/): This extracts colours and creates colour palette based on an input image. This palette can be dumped in a a csv file. 
+
 ## Installation
 
 ```bash
