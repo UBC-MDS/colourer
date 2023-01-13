@@ -6,17 +6,19 @@ A Python package that can be used to extract colours from images for use in data
 
 This package allows users to integrate unique colour palettes into their graphs for exploratory data analysis. The colours are retrieved from image data (via URL) and are selected based on their overall prominence in a picture. While there are existing tools that are used to process images and create figures independently, we aim to combine both of their functionalities to help programmers easily design effective and creative visualizations.
 
-### Other similar Python libraries
+## Where Our Package Fits
 
-There are packages in python that do similar functionality, as certain functions, but these packages require more than one package in order to do everything that we would like to do. 
+As mentioned, there are packages in Python that are capable of colour extraction and data visualization, but none exist that combine the two functions to our knowledge. Some examples of such packages are as follows:
 
-For instance:
+[Pillow](https://pypi.org/project/Pillow/): This package adds image processing capabilities into Python interpreters. It can perform various image transformations but does not allow for colours to be extraction directly for further use.
 
-[Extcolors](https://pypi.org/project/extcolors/): This provides a color extraction into text along with the occurrence rate. However, with this package, we would need to use additional packages to create plots of common colours in the image. As well, this would not allow us to invert them, or create a palette.
+[extcolors](https://pypi.org/project/extcolors/): This extracts RGB colour codes from images into text along with the occurrence rate. However, we would need to use additional packages to create plots of common colours in the image. This would also not allow us to invert them, or create a palette.
 
-[Color-extraction](https://pypi.org/project/color-extraction/): This provides the most similar color for the pixels of an image from a palette of predefined colors.
+[color-extraction](https://pypi.org/project/color-extraction/): This provides the most similar color for the pixels of an image from a palette of predefined colors.
 
-[Pylette](https://github.com/qTipTip/Pylette/): This extracts colours and creates colour palette based on an input image. This palette can be dumped in a a csv file. 
+[Pylette](https://github.com/qTipTip/Pylette/): This extracts colours and creates a colour palette based on an input image. This palette can be dumped into a csv file that would need them to
+
+Therefore, we are developing `colourpycker` to bridge this gap.
 
 ## Installation
 
