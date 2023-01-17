@@ -1,0 +1,17 @@
+name: colourpycker
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python==3.9.*
+  - ipykernel
+  - ipywidgets
+  - pandas
+  - numpy
+  - matplotlib
+  - altair
+  - requests
+  - pip
+  - pip:
+      - extcolors
+      - pillow

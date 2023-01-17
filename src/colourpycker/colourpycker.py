@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from PIL import Image
-from urllib.request import urlopen
+import requests
 import matplotlib.pyplot as plt
 import extcolors
 
@@ -114,3 +114,34 @@ def negative(img_url, num_colours=1, tolerance=100):
     --------
     >>> negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 3, 20)
     """
+    # Load image
+    img = Image.open(requests.get(img_url, stream=True).raw)
+
+    # Resize image for processing - 800 pixel maximum
+    width = 800 / float(img.size[0])
+    height = int((float(img.size[1]) * float(width)))
+    img = img.resize((800, height), Image.LANCZOS)
+
+    # Extract colours
+    colours, pixel_count = extcolors.extract_from_image(img)
+
+    # Format RGB codes into list
+    colour_list = str(colours).replace('[(', '').split(', (')[0:-1]
+    rgb_list = [i.split('), ')[0] + ')' for i in colour_list]
+
+    # Inverse RGB colour codes and extract HEX codes
+    inversed_rgb = []
+    hex = []
+    for cols in rgb_list:
+        rgb = cols.replace('(', '').replace(')', '').split(', ')
+        inverse_code = (255 - int(rgb[0]), 255 - int(rgb[1]), 255 - int(rgb[2]))
+        inversed_rgb.append(inverse_code)
+        hex.append('#%02x%02x%02x' % inverse_code)
+    
+    # Format data frame
+    df = pd.DataFrame({
+        'HEX' : hex,
+        'RGB' : inversed_rgb
+    })
+
+    return df
