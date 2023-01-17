@@ -1,9 +1,59 @@
-import numpy as np
+import PIL
+import requests
 import pandas as pd
+from io import BytesIO
+from extcolors import extract_from_path
 from PIL import Image
-from urllib.request import urlopen
-import matplotlib.pyplot as plt
-import extcolors
+import os
+import re
+
+
+def check_param_validity(url, tolerance, limit):
+    """
+    Checks if the input params are valid
+
+    Parameters
+    ----------
+    img_url: str
+        the url of the image from which the color palette is to be extracted
+    tolerance: int
+        a value between 0 and 100 representing the tolerance level for color matching
+    limit: int
+        the maximum number of colors to be returned in the palettel
+
+    Returns:
+    -------
+    bool:
+        True if params are valid else return False
+    """
+
+    # Regex from https://www.geeksforgeeks.org/check-if-an-url-is-valid-or-not-using-regular-expression/
+
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+    return (
+        re.search(regex, url) is not None
+        and (tolerance >= 0 and tolerance <= 100)
+        and (limit >= 0 and limit <= 100)
+    )
+
+
+def rgb_to_hex(rgb):
+    """
+    Convert an RGB value stored as a tuple to a hex color code.
+
+    Parameters
+    ----------
+    rgb : tuple
+        The tuple of integers representing the RGB values
+    Returns
+    -------
+    str
+        The hex color code of the input RGB color.
+    """
+
+    return "#" + "".join(
+        ["0{:x}".format(v) if v < 16 else "{:x}".format(v) for v in rgb]
+    )
 
 
 def get_color_palette(img_url, tolerance, limit):
@@ -31,6 +81,60 @@ def get_color_palette(img_url, tolerance, limit):
     --------
     get_color_palette('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 20, 5)
     """
+
+    if not check_param_validity(img_url, tolerance, limit):
+        print("The input parameters are not valid")
+        return
+
+    temp_image_name = "image_for_extraction.jpg"
+    temp_image_storage_papth = r"./images"
+    full_file_path = os.path.join(temp_image_storage_papth, temp_image_name)
+    resize_large_img = 1000
+
+    # Send a GET request to the URL and get the image data
+    try:
+        response = requests.get(img_url, timeout=50)
+        image = Image.open(BytesIO(response.content))
+
+        if response.status_code != 200:
+            print("Unable to get image from the web url.")
+            return
+
+    except requests.exceptions.ConnectionError as ex:
+        print(
+            "There seems to be an error accessing the URL and downloading it as an image. Please check the URL and try again."
+        )
+        print(ex)
+        return
+
+    except PIL.UnidentifiedImageError as ex:
+        print("The URL may not point to an image. Please check the URL and try again.")
+        print(ex)
+        return
+
+    image.thumbnail((resize_large_img, resize_large_img))
+    image.name = temp_image_name
+    image.seek(0)
+
+    # Make necessary directories to the required path
+    if not os.path.exists(temp_image_storage_papth):
+        os.makedirs(temp_image_storage_papth)
+
+    image.save(full_file_path)
+
+    colors, _ = extract_from_path(full_file_path, tolerance=tolerance, limit=limit)
+
+    df = pd.DataFrame(columns=["HEX", "RGB"])
+    data = {
+        "HEX": [rgb_to_hex(rgb_value) for rgb_value in [color[0] for color in colors]],
+        "RGB": [
+            ",".join(map(str, rgb_value))
+            for rgb_value in [color[0] for color in colors]
+        ],
+        "Color Count": [freq for freq in [color[1] for color in colors]],
+    }
+    df = pd.DataFrame(data)
+    return df
 
 
 def donut(img_url, num_clrs, img_size):
