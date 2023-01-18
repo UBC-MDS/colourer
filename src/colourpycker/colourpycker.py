@@ -164,5 +164,3 @@ def negative(img_url, num_colours=1, tolerance=0):
     print(inversed_rgb)
     
     return df
-    
-# negative("https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png", 5, 100)
