@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 
 def test_negative():
-    """Test that negative generates the correct output and expects the right inputs."""
+    """Test that negative() generates the correct output and expects the right inputs."""
     expected = pd.DataFrame({
         'HEX' : ['#94604a', '#f6edf2', '#244176', '#c999d8', '#3eaadc'],
         'RGB' : [(148, 96, 74), (246, 237, 242), (36, 65, 118), (201, 153, 216), (62, 170, 220)]
