@@ -1,8 +1,6 @@
-import numpy as np
 import pandas as pd
 from PIL import Image
 import requests
-import matplotlib.pyplot as plt
 import extcolors
 
 
@@ -88,7 +86,7 @@ def scatterplot(url, dataset, x, y, fill):
     """
 
 
-def negative(img_url, num_colours=1, tolerance=100):
+def negative(img_url, num_colours=1, tolerance=0):
     """Invert top n colours in an image file.
 
     Colours are extracted from an image via URL and reversed,
@@ -114,6 +112,21 @@ def negative(img_url, num_colours=1, tolerance=100):
     --------
     >>> negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 3, 20)
     """
+    if not img_url.startswith('https://'):
+        raise ValueError("'img_url' must be a link (not a path).")
+
+    if not [ext for ext in ['.png', '.jpg', '.jpeg'] if (ext in img_url)]:
+        raise ValueError("'img_url' must be a direct link to an image file.")
+    
+    if not isinstance(num_colours, int):
+        raise TypeError("'num_colours' must be an integer value.")
+
+    if not isinstance(tolerance, int):
+        raise TypeError("'tolerance' must be an integer value.")
+    
+    if not 0 <= tolerance <= 100:
+        raise ValueError("'tolerance' must be between 0 and 100.")
+
     # Load image
     img = Image.open(requests.get(img_url, stream=True).raw)
 
@@ -123,10 +136,14 @@ def negative(img_url, num_colours=1, tolerance=100):
     img = img.resize((800, height), Image.LANCZOS)
 
     # Extract colours
-    colours, pixel_count = extcolors.extract_from_image(img)
+    colours, pixel_count = extcolors.extract_from_image(img, tolerance=tolerance, limit=num_colours)
+    
+    # Check if there are any non-transparent pixels
+    if not colours:
+        raise ValueError("No coloured pixels detected in the image. It is likely transparent or something went wrong.")
 
     # Format RGB codes into list
-    colour_list = str(colours).replace('[(', '').split(', (')[0:-1]
+    colour_list = str(colours).replace('[(', '').split(', (')
     rgb_list = [i.split('), ')[0] + ')' for i in colour_list]
 
     # Inverse RGB colour codes and extract HEX codes
@@ -137,11 +154,15 @@ def negative(img_url, num_colours=1, tolerance=100):
         inverse_code = (255 - int(rgb[0]), 255 - int(rgb[1]), 255 - int(rgb[2]))
         inversed_rgb.append(inverse_code)
         hex.append('#%02x%02x%02x' % inverse_code)
-    
+
     # Format data frame
     df = pd.DataFrame({
         'HEX' : hex,
         'RGB' : inversed_rgb
     })
-
+    print(hex)
+    print(inversed_rgb)
+    
     return df
+    
+# negative("https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png", 5, 100)

@@ -8,10 +8,12 @@ dependencies:
   - ipywidgets
   - pandas
   - numpy
-  - matplotlib
   - altair
   - requests
+  - pytest
   - pip
   - pip:
       - extcolors
       - pillow
+      - pytest
+      - poetry
