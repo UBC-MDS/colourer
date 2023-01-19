@@ -160,7 +160,5 @@ def negative(img_url, num_colours=1, tolerance=0):
         'HEX' : hex,
         'RGB' : inversed_rgb
     })
-    print(hex)
-    print(inversed_rgb)
     
     return df
