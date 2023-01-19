@@ -33,7 +33,7 @@ def get_color_palette(img_url, tolerance, limit):
     """
 
 
-def donut(img_url, num_clrs, img_size):
+def donut(img_url, num_clrs, tolerance, img_size, plot_show=True):
     """Create a donut chart of the top n colors in the image (number of colors specified by the user)
 
     Creates a square donut chart using the n most common colors from the image
@@ -44,18 +44,65 @@ def donut(img_url, num_clrs, img_size):
         the url of the image that the user is pulling the colors from
     num_clrs: int
         the number of colors the user wants to pull from the image
+    tolerance: int
+        a value between 0 and 100 representing the tolerance level for color matching
     img_size: int
         the pixel width and height of the resulting chart
+    plot_show: bool
+        set False to supress output of the chart
 
     Returns
     ----------
-    altair.vegalite.v4.api.Chart
+    matplotlib.figure.Figure
         Donut chart of the colours
 
     Examples
     --------
-    donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 400)
+    donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 20, 400)
     """
+
+    # get the top 100 colors and their proportion in the image
+    df = get_color_palette(img_url, tolerance, limit=100)
+    colors_prop = [round(x/sum(df['Color Count'].to_list()), 2) for x in df['Color Count'].to_list()]
+    
+    img_colors = df['HEX'].to_list()[0:num_clrs]
+    img_colors.append("#a9a9a9")
+
+    value = colors_prop[0:num_clrs]
+    value.append(round(1-sum(value), 2))
+
+    # need to do this to keep the donut hole in order
+    factor = 0 # initialize the factor
+    img_size = img_size/227 # macbook air resolution is 227 pixels/inch
+    if img_size > 600/227:
+        factor = 0.3
+    elif img_size <= 200/227:
+        factor = 0.7
+    elif img_size <= 400/227:
+        factor = 0.6
+    elif img_size <=600/227:
+        factor = 0.4
+
+    category_value = []
+    for i in range(len(img_colors)):
+        category_value.append(img_colors[i] + ": "+ str(f'{value[i]*100:.0f}%'))
+    
+    # create the donut hole
+    pie = plt.Circle( (0,0), radius=img_size*factor, color='white')
+
+    # make labels
+    labels = category_value[:-1]
+    labels.append("Other colors: " + str(f'{value[-1]*100:.0f}%'))
+
+    # label and color
+    plt.pie(value, labels=labels, colors=img_colors, radius=img_size)
+    p = plt.gcf()
+    p.gca().add_artist(pie)
+
+    if plot_show:
+        plt.show()
+
+    return p
 
 
 def scatterplot(url, dataset, x, y, fill):
