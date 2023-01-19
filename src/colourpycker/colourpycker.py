@@ -58,7 +58,7 @@ def donut(img_url, num_clrs, img_size):
     """
 
 
-def scatterplot(url, dataset, x, y, fill):
+def scatterplot(img_url, dataset, x, y, fill):
     """Create a two-dimensional scatterplot based on the colours of the image
 
     Creates a simple scatterplot using the colours selected from the image,
@@ -86,7 +86,19 @@ def scatterplot(url, dataset, x, y, fill):
     --------
     scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species')
     """
+    if not img_url.startswith('https://'):
+        raise ValueError("'img_url' must be a link (not a path).")
+    
+    if not [ext for ext in ['.png', '.jpg', '.jpeg'] if (ext in img_url)]:
+        raise ValueError("'img_url' must be a direct link to an image file.")
+    
+    if not isinstance(x, str):
+        raise TypeError("'x' must be a string value.")
 
+    if not isinstance(y, st):
+        raise TypeError("'y' must be a string value.")
+    
+    
 
 def negative(img_url, num_colours=1, tolerance=100):
     """Invert top n colours in an image file.
