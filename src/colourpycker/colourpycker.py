@@ -87,13 +87,13 @@ def get_color_palette(img_url, tolerance, limit):
         return
 
     temp_image_name = "image_for_extraction.jpg"
-    temp_image_storage_papth = r"./images"
-    full_file_path = os.path.join(temp_image_storage_papth, temp_image_name)
+    temp_image_storage_path = r"./images"
+    full_file_path = os.path.join(temp_image_storage_path, temp_image_name)
     resize_large_img = 1000
 
     # Send a GET request to the URL and get the image data
     try:
-        response = requests.get(img_url, timeout=50)
+        response = requests.get(img_url, timeout=30)
         image = Image.open(BytesIO(response.content))
 
         if response.status_code != 200:
@@ -117,8 +117,8 @@ def get_color_palette(img_url, tolerance, limit):
     image.seek(0)
 
     # Make necessary directories to the required path
-    if not os.path.exists(temp_image_storage_papth):
-        os.makedirs(temp_image_storage_papth)
+    if not os.path.exists(temp_image_storage_path):
+        os.makedirs(temp_image_storage_path)
 
     image.save(full_file_path)
 
@@ -134,6 +134,10 @@ def get_color_palette(img_url, tolerance, limit):
         "Color Count": [freq for freq in [color[1] for color in colors]],
     }
     df = pd.DataFrame(data)
+
+    # Clean Up
+    os.remove(full_file_path)
+
     return df
 
 
