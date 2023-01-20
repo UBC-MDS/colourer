@@ -50,8 +50,6 @@ donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000
 scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
 
 negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 10, 20)
-
-
 ```
 
 ## Contributing
