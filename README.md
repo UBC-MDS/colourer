@@ -41,7 +41,13 @@ $ pip install colourpycker
 For more examples on how to use `colourpycker`, a Jupyter Notebook can be found [here](https://github.com/UBC-MDS/colourpycker/blob/main/docs/example.ipynb) with additional use cases.
 
 ```
-from colourpycker.colourpycker import get_colour_palette, donut, scatterplot, negative
+from colourpycker.colourpycker import get_colour_palette, donut, scatterplot, scatterplot, negative, get_color_palette, donut
+
+get_color_palette('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 20, 5)
+
+donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 20, 400)
+
+scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
 
 get_color_palette('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 20, 5)
 donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 20, 400)
