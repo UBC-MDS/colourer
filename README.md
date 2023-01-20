@@ -30,7 +30,7 @@ $ pip install colourpycker
 
 `get_color_palette(img_url, tolerance, limit)`: This function extracts the most common colors from an image and returns them as a data frame of hex color codes and RGB values. The user is provided with the ability to set tolerance while picking colors, along with the number of colors that should be returned.
 
-`donut(img_url, num_clrs, img_size)`: This function creates a donut chart with information on the $n$ most common colors in the linked image. The user specifies the image, the number of colors, and specifies the size of the resulting chart.
+`donut(img_url, num_clrs, tolerance, img_size, plot_show=True)`: This function creates a donut chart with information on the $n$ most common colors in the linked image. The user specifies the image, the number of colors, the tolerance for how similar the colors will be, and specifies the size of the resulting chart in pixels.
 
 `scatterplot(img_url, dataset, x, y, fill, tolerance)`: This function creates a simple scatterplot using the colours selected from the image based on a dataset of the users choosing.
 
@@ -38,7 +38,13 @@ $ pip install colourpycker
 
 ## Usage
 
-- TODO
+For more examples on how to use `colourpycker`, a Jupyter Notebook can be found [here](https://github.com/UBC-MDS/colourpycker/blob/main/docs/example.ipynb) with additional use cases.
+
+```
+from colourpycker.colourpycker import negative
+
+negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 10, 20)
+```
 
 ## Contributing
 

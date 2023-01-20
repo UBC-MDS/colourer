@@ -1,10 +1,61 @@
-import numpy as np
 import pandas as pd
+from io import BytesIO
+from extcolors import extract_from_path
 from PIL import Image
-from urllib.request import urlopen
 import matplotlib.pyplot as plt
 import extcolors
 import altair as alt
+import PIL
+import os
+import re
+
+
+def check_param_validity(url, tolerance, limit):
+    """
+    Checks if the input params are valid
+
+    Parameters
+    ----------
+    img_url: str
+        the url of the image from which the color palette is to be extracted
+    tolerance: int
+        a value between 0 and 100 representing the tolerance level for color matching
+    limit: int
+        the maximum number of colors to be returned in the palettel
+
+    Returns:
+    -------
+    bool:
+        True if params are valid else return False
+    """
+
+    # Regex from https://www.geeksforgeeks.org/check-if-an-url-is-valid-or-not-using-regular-expression/
+
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+    return (
+        re.search(regex, url) is not None
+        and (tolerance >= 0 and tolerance <= 100)
+        and (limit >= 0 and limit <= 100)
+    )
+
+
+def rgb_to_hex(rgb):
+    """
+    Convert an RGB value stored as a tuple to a hex color code.
+
+    Parameters
+    ----------
+    rgb : tuple
+        The tuple of integers representing the RGB values
+    Returns
+    -------
+    str
+        The hex color code of the input RGB color.
+    """
+
+    return "#" + "".join(
+        ["0{:x}".format(v) if v < 16 else "{:x}".format(v) for v in rgb]
+    )
 
 
 def get_color_palette(img_url, tolerance, limit):
@@ -33,8 +84,66 @@ def get_color_palette(img_url, tolerance, limit):
     get_color_palette('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 20, 5)
     """
 
+    if not check_param_validity(img_url, tolerance, limit):
+        print("The input parameters are not valid")
+        return
 
-def donut(img_url, num_clrs, img_size):
+    temp_image_name = "image_for_extraction.jpg"
+    temp_image_storage_path = r"./images"
+    full_file_path = os.path.join(temp_image_storage_path, temp_image_name)
+    resize_large_img = 1000
+
+    # Send a GET request to the URL and get the image data
+    try:
+        response = requests.get(img_url, timeout=30)
+        image = Image.open(BytesIO(response.content))
+
+        if response.status_code != 200:
+            print("Unable to get image from the web url.")
+            return
+
+    except requests.exceptions.ConnectionError as ex:
+        print(
+            "There seems to be an error accessing the URL and downloading it as an image. Please check the URL and try again."
+        )
+        print(ex)
+        return
+
+    except PIL.UnidentifiedImageError as ex:
+        print("The URL may not point to an image. Please check the URL and try again.")
+        print(ex)
+        return
+
+    image.thumbnail((resize_large_img, resize_large_img))
+    image.name = temp_image_name
+    image.seek(0)
+
+    # Make necessary directories to the required path
+    if not os.path.exists(temp_image_storage_path):
+        os.makedirs(temp_image_storage_path)
+
+    image.save(full_file_path)
+
+    colors, _ = extract_from_path(full_file_path, tolerance=tolerance, limit=limit)
+
+    df = pd.DataFrame(columns=["HEX", "RGB"])
+    data = {
+        "HEX": [rgb_to_hex(rgb_value) for rgb_value in [color[0] for color in colors]],
+        "RGB": [
+            ",".join(map(str, rgb_value))
+            for rgb_value in [color[0] for color in colors]
+        ],
+        "Color Count": [freq for freq in [color[1] for color in colors]],
+    }
+    df = pd.DataFrame(data)
+
+    # Clean Up
+    os.remove(full_file_path)
+
+    return df
+
+
+def donut(img_url, num_clrs, tolerance, img_size, plot_show=True):
     """Create a donut chart of the top n colors in the image (number of colors specified by the user)
 
     Creates a square donut chart using the n most common colors from the image
@@ -45,18 +154,65 @@ def donut(img_url, num_clrs, img_size):
         the url of the image that the user is pulling the colors from
     num_clrs: int
         the number of colors the user wants to pull from the image
+    tolerance: int
+        a value between 0 and 100 representing the tolerance level for color matching
     img_size: int
         the pixel width and height of the resulting chart
+    plot_show: bool
+        set False to supress output of the chart
 
     Returns
     ----------
-    altair.vegalite.v4.api.Chart
+    matplotlib.figure.Figure
         Donut chart of the colours
 
     Examples
     --------
-    donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 400)
+    donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 20, 400)
     """
+
+    # get the top 100 colors and their proportion in the image
+    df = get_color_palette(img_url, tolerance, limit=100)
+    colors_prop = [round(x/sum(df['Color Count'].to_list()), 2) for x in df['Color Count'].to_list()]
+    
+    img_colors = df['HEX'].to_list()[0:num_clrs]
+    img_colors.append("#a9a9a9")
+
+    value = colors_prop[0:num_clrs]
+    value.append(round(1-sum(value), 2))
+
+    # need to do this to keep the donut hole in order
+    factor = 0 # initialize the factor
+    img_size = img_size/227 # macbook air resolution is 227 pixels/inch
+    if img_size > 600/227:
+        factor = 0.3
+    elif img_size <= 200/227:
+        factor = 0.7
+    elif img_size <= 400/227:
+        factor = 0.6
+    elif img_size <=600/227:
+        factor = 0.4
+
+    category_value = []
+    for i in range(len(img_colors)):
+        category_value.append(img_colors[i] + ": "+ str(f'{value[i]*100:.0f}%'))
+    
+    # create the donut hole
+    pie = plt.Circle( (0,0), radius=img_size*factor, color='white')
+
+    # make labels
+    labels = category_value[:-1]
+    labels.append("Other colors: " + str(f'{value[-1]*100:.0f}%'))
+
+    # label and color
+    plt.pie(value, labels=labels, colors=img_colors, radius=img_size)
+    p = plt.gcf()
+    p.gca().add_artist(pie)
+
+    if plot_show:
+        plt.show()
+
+    return p
 
 
 def scatterplot(img_url, dataset, x, y, fill, tolerance=50):
@@ -122,7 +278,7 @@ def scatterplot(img_url, dataset, x, y, fill, tolerance=50):
     return scatter
     
 
-def negative(img_url, num_colours=1, tolerance=100):
+def negative(img_url, num_colours=1, tolerance=0):
     """Invert top n colours in an image file.
 
     Colours are extracted from an image via URL and reversed,
@@ -148,3 +304,53 @@ def negative(img_url, num_colours=1, tolerance=100):
     --------
     >>> negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 3, 20)
     """
+    if not img_url.startswith('https://'):
+        raise ValueError("'img_url' must be a link (not a path).")
+
+    if not [ext for ext in ['.png', '.jpg', '.jpeg'] if (ext in img_url)]:
+        raise ValueError("'img_url' must be a direct link to an image file.")
+    
+    if not isinstance(num_colours, int):
+        raise TypeError("'num_colours' must be an integer value.")
+
+    if not isinstance(tolerance, int):
+        raise TypeError("'tolerance' must be an integer value.")
+    
+    if not 0 <= tolerance <= 100:
+        raise ValueError("'tolerance' must be between 0 and 100.")
+
+    # Load image
+    img = Image.open(requests.get(img_url, stream=True).raw)
+
+    # Resize image for processing - 800 pixel maximum
+    width = 800 / float(img.size[0])
+    height = int((float(img.size[1]) * float(width)))
+    img = img.resize((800, height), Image.LANCZOS)
+
+    # Extract colours
+    colours, pixel_count = extcolors.extract_from_image(img, tolerance=tolerance, limit=num_colours)
+    
+    # Check if there are any non-transparent pixels
+    if not colours:
+        raise ValueError("No coloured pixels detected in the image. It is likely transparent or something went wrong.")
+
+    # Format RGB codes into list
+    colour_list = str(colours).replace('[(', '').split(', (')
+    rgb_list = [i.split('), ')[0] + ')' for i in colour_list]
+
+    # Inverse RGB colour codes and extract HEX codes
+    inversed_rgb = []
+    hex = []
+    for cols in rgb_list:
+        rgb = cols.replace('(', '').replace(')', '').split(', ')
+        inverse_code = (255 - int(rgb[0]), 255 - int(rgb[1]), 255 - int(rgb[2]))
+        inversed_rgb.append(inverse_code)
+        hex.append('#%02x%02x%02x' % inverse_code)
+
+    # Format data frame
+    df = pd.DataFrame({
+        'HEX' : hex,
+        'RGB' : inversed_rgb
+    })
+    
+    return df
