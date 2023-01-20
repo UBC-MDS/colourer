@@ -19,7 +19,7 @@ def test_scatterplot():
     test_scatter = scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', test_df, 'x', 'y', 'fill', 50)
     
     # Tests
-    assert test_scatter.mark == 'point', 'The mark should be a line'
+    assert test_scatter.mark == 'point', 'The mark should be a point'
     
     assert type(test_scatter)  == alt.vegalite.v4.api.Chart, "The return should be an altair Chart"
     
