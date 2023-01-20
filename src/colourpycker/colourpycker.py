@@ -2,10 +2,9 @@ import pandas as pd
 from io import BytesIO
 from extcolors import extract_from_path
 from PIL import Image
-from urllib.request import urlopen
 import matplotlib.pyplot as plt
 import extcolors
-import pytest
+import altair as alt
 import PIL
 import os
 import re
@@ -216,7 +215,7 @@ def donut(img_url, num_clrs, tolerance, img_size, plot_show=True):
     return p
 
 
-def scatterplot(url, dataset, x, y, fill):
+def scatterplot(img_url, dataset, x, y, fill, tolerance=50):
     """Create a two-dimensional scatterplot based on the colours of the image
 
     Creates a simple scatterplot using the colours selected from the image,
@@ -224,7 +223,7 @@ def scatterplot(url, dataset, x, y, fill):
 
     Parameters
     ----------
-    url : str
+    img_url : str
         url of the image to extract colours
     dataset : pandas.DataFrame
         the dataset to plot (already imported)
@@ -234,6 +233,9 @@ def scatterplot(url, dataset, x, y, fill):
         the data to plot on the y-axis
     fill: str
         the data to use to fill in the points of the scatter plot
+    tolerance : int
+        number between 0 and 100 used to give better visual representation;
+        0 will not group any similar colours together, 100 will group all colours into one
 
     Returns
     ----------
@@ -242,9 +244,39 @@ def scatterplot(url, dataset, x, y, fill):
 
     Examples
     --------
-    scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species')
+    scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
     """
+    if not img_url.startswith('https://'):
+        raise ValueError("'img_url' must be a link (not a path).")
+    
+    if not [ext for ext in ['.png', '.jpg', '.jpeg'] if (ext in img_url)]:
+        raise ValueError("'img_url' must be a direct link to an image file.")
+    
+    if not isinstance(dataset, pd.core.frame.DataFrame):
+        raise TypeError("'dataset' must be a pandas DataFrame.")
+    
+    if not isinstance(x, str):
+        raise TypeError("'x' must be a string value.")
 
+    if not isinstance(y, str):
+        raise TypeError("'y' must be a string value.")
+    
+    if not isinstance(fill, str):
+        raise TypeError("'y' must be a string value.")
+    
+    if not 0 <= tolerance <= 100:
+        raise ValueError("'tolerance' must be between 0 and 100.")
+    
+    # Get image colour palette
+    colours = get_color_palette(img_url, tolerance, dataset[fill].nunique())
+    
+    # Make Scatterplot based of the image colour palette
+    scatter = alt.Chart(dataset).mark_point().encode(
+        alt.X(field = x), 
+        alt.Y(field = y), 
+        alt.Fill(field = fill, scale = alt.Scale(range = colours["HEX"].to_list())))
+    return scatter
+    
 
 def negative(img_url, num_colours=1, tolerance=0):
     """Invert top n colours in an image file.
