@@ -49,8 +49,8 @@ def test_get_color_palette_invalid_tolerance():
 def test_donut():
     """Testing that donut() generates the correct output"""
 
-    actual = len(donut("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, 30, 200, plot_show=False).findobj(text.Text))
-    expect = 13
+    actual = str(donut("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, 30, 200, plot_show=False).findobj(text.Text)[0:5]).count("#")
+    expect = 5
     assert actual == expect, "the function is not plotting the correct amount of colors"
 
     actual = str(type(donut("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, 30, 200, plot_show=False)))
