@@ -4,6 +4,7 @@ from PIL import Image
 from urllib.request import urlopen
 import matplotlib.pyplot as plt
 import extcolors
+import pytest
 
 
 def get_color_palette(img_url, tolerance, limit):

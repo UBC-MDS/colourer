@@ -1,4 +1,5 @@
-from colourpycker import colourpycker
+from colourpycker.colourpycker import donut
+from colourpycker.colourpycker import get_color_palette
 import numpy as np
 import pandas as pd
 import matplotlib.text as text
