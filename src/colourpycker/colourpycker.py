@@ -8,6 +8,7 @@ import altair as alt
 import PIL
 import os
 import re
+import requests
 
 
 def check_param_validity(url, tolerance, limit):
@@ -211,7 +212,7 @@ def donut(img_url, num_clrs, tolerance, img_size, plot_show=True):
 
     if plot_show:
         plt.show()
-
+        return
     return p
 
 
