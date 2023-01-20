@@ -174,36 +174,39 @@ def donut(img_url, num_clrs, tolerance, img_size, plot_show=True):
 
     # get the top 100 colors and their proportion in the image
     df = get_color_palette(img_url, tolerance, limit=100)
-    colors_prop = [round(x/sum(df['Color Count'].to_list()), 2) for x in df['Color Count'].to_list()]
-    
-    img_colors = df['HEX'].to_list()[0:num_clrs]
+    colors_prop = [
+        round(x / sum(df["Color Count"].to_list()), 2)
+        for x in df["Color Count"].to_list()
+    ]
+
+    img_colors = df["HEX"].to_list()[0:num_clrs]
     img_colors.append("#a9a9a9")
 
     value = colors_prop[0:num_clrs]
-    value.append(round(1-sum(value), 2))
+    value.append(round(1 - sum(value), 2))
 
     # need to do this to keep the donut hole in order
-    factor = 0 # initialize the factor
-    img_size = img_size/227 # macbook air resolution is 227 pixels/inch
-    if img_size > 600/227:
+    factor = 0  # initialize the factor
+    img_size = img_size / 227  # macbook air resolution is 227 pixels/inch
+    if img_size > 600 / 227:
         factor = 0.3
-    elif img_size <= 200/227:
+    elif img_size <= 200 / 227:
         factor = 0.7
-    elif img_size <= 400/227:
+    elif img_size <= 400 / 227:
         factor = 0.6
-    elif img_size <=600/227:
+    elif img_size <= 600 / 227:
         factor = 0.4
 
     category_value = []
     for i in range(len(img_colors)):
-        category_value.append(img_colors[i] + ": "+ str(f'{value[i]*100:.0f}%'))
-    
+        category_value.append(img_colors[i] + ": " + str(f"{value[i]*100:.0f}%"))
+
     # create the donut hole
-    pie = plt.Circle( (0,0), radius=img_size*factor, color='white')
+    pie = plt.Circle((0, 0), radius=img_size * factor, color="white")
 
     # make labels
     labels = category_value[:-1]
-    labels.append("Other colors: " + str(f'{value[-1]*100:.0f}%'))
+    labels.append("Other colors: " + str(f"{value[-1]*100:.0f}%"))
 
     # label and color
     plt.pie(value, labels=labels, colors=img_colors, radius=img_size)
@@ -247,37 +250,42 @@ def scatterplot(img_url, dataset, x, y, fill, tolerance=50):
     --------
     scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
     """
-    if not img_url.startswith('https://'):
+    if not img_url.startswith("https://"):
         raise ValueError("'img_url' must be a link (not a path).")
-    
-    if not [ext for ext in ['.png', '.jpg', '.jpeg'] if (ext in img_url)]:
+
+    if not [ext for ext in [".png", ".jpg", ".jpeg"] if (ext in img_url)]:
         raise ValueError("'img_url' must be a direct link to an image file.")
-    
+
     if not isinstance(dataset, pd.core.frame.DataFrame):
         raise TypeError("'dataset' must be a pandas DataFrame.")
-    
+
     if not isinstance(x, str):
         raise TypeError("'x' must be a string value.")
 
     if not isinstance(y, str):
         raise TypeError("'y' must be a string value.")
-    
+
     if not isinstance(fill, str):
         raise TypeError("'y' must be a string value.")
-    
+
     if not 0 <= tolerance <= 100:
         raise ValueError("'tolerance' must be between 0 and 100.")
-    
+
     # Get image colour palette
     colours = get_color_palette(img_url, tolerance, dataset[fill].nunique())
-    
+
     # Make Scatterplot based of the image colour palette
-    scatter = alt.Chart(dataset).mark_point().encode(
-        alt.X(field = x), 
-        alt.Y(field = y), 
-        alt.Fill(field = fill, scale = alt.Scale(range = colours["HEX"].to_list())))
+    scatter = (
+        alt.Chart(dataset)
+        .mark_point()
+        .encode(
+            alt.X(field=x),
+            alt.Y(field=y),
+            alt.Fill(field=fill, scale=alt.Scale(range=colours["HEX"].to_list())),
+        )
+    )
     return scatter
-    
+
 
 def negative(img_url, num_colours=1, tolerance=0):
     """Invert top n colours in an image file.
@@ -305,18 +313,18 @@ def negative(img_url, num_colours=1, tolerance=0):
     --------
     >>> negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 3, 20)
     """
-    if not img_url.startswith('https://'):
+    if not img_url.startswith("https://"):
         raise ValueError("'img_url' must be a link (not a path).")
 
-    if not [ext for ext in ['.png', '.jpg', '.jpeg'] if (ext in img_url)]:
+    if not [ext for ext in [".png", ".jpg", ".jpeg"] if (ext in img_url)]:
         raise ValueError("'img_url' must be a direct link to an image file.")
-    
+
     if not isinstance(num_colours, int):
         raise TypeError("'num_colours' must be an integer value.")
 
     if not isinstance(tolerance, int):
         raise TypeError("'tolerance' must be an integer value.")
-    
+
     if not 0 <= tolerance <= 100:
         raise ValueError("'tolerance' must be between 0 and 100.")
 
@@ -329,29 +337,30 @@ def negative(img_url, num_colours=1, tolerance=0):
     img = img.resize((800, height), Image.LANCZOS)
 
     # Extract colours
-    colours, pixel_count = extcolors.extract_from_image(img, tolerance=tolerance, limit=num_colours)
-    
+    colours, pixel_count = extcolors.extract_from_image(
+        img, tolerance=tolerance, limit=num_colours
+    )
+
     # Check if there are any non-transparent pixels
     if not colours:
-        raise ValueError("No coloured pixels detected in the image. It is likely transparent or something went wrong.")
+        raise ValueError(
+            "No coloured pixels detected in the image. It is likely transparent or something went wrong."
+        )
 
     # Format RGB codes into list
-    colour_list = str(colours).replace('[(', '').split(', (')
-    rgb_list = [i.split('), ')[0] + ')' for i in colour_list]
+    colour_list = str(colours).replace("[(", "").split(", (")
+    rgb_list = [i.split("), ")[0] + ")" for i in colour_list]
 
     # Inverse RGB colour codes and extract HEX codes
     inversed_rgb = []
     hex = []
     for cols in rgb_list:
-        rgb = cols.replace('(', '').replace(')', '').split(', ')
+        rgb = cols.replace("(", "").replace(")", "").split(", ")
         inverse_code = (255 - int(rgb[0]), 255 - int(rgb[1]), 255 - int(rgb[2]))
         inversed_rgb.append(inverse_code)
-        hex.append('#%02x%02x%02x' % inverse_code)
+        hex.append("#%02x%02x%02x" % inverse_code)
 
     # Format data frame
-    df = pd.DataFrame({
-        'HEX' : hex,
-        'RGB' : inversed_rgb
-    })
-    
+    df = pd.DataFrame({"HEX": hex, "RGB": inversed_rgb})
+
     return df
