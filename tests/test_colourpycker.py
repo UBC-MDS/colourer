@@ -1,6 +1,46 @@
-from colourpycker.colourpycker import negative
 import pandas as pd
+from colourpycker.colourpycker import negative, get_color_palette
 import pytest
+
+
+def test_get_color_palette_valid_input():
+    """Test for get_color_palette when input parameters are valid"""
+    img_url = "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg"
+    tolerance = 20
+    limit = 5
+    result = get_color_palette(img_url, tolerance, limit)
+    assert isinstance(result, pd.DataFrame)
+    assert result.shape == (5, 3)
+
+
+def test_get_color_palette_not_a_url():
+    """Test for get_color_palette when URL is a random string"""
+    img_url = "soijfoidjfosdijfoisdj"
+    tolerance = 20
+    limit = 5
+    result = get_color_palette(img_url, tolerance, limit)
+    # Make sure no exception is raised and the function handles it
+    assert result is None
+
+
+def test_get_color_palette_url_but_not_image():
+    """Test for get_color_palette when URL is valid but it is not pointing to an image"""
+    img_url = "https://soijfoidjfosdijfoisdj.url"
+    tolerance = 20
+    limit = 5
+    result = get_color_palette(img_url, tolerance, limit)
+    # Make sure no exception is raised and the function handles it
+    assert result is None
+
+
+def test_get_color_palette_invalid_tolerance():
+    """Test for get_color_palette when tolerance is invalid"""
+    img_url = "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg"
+    tolerance = -20000
+    limit = 5
+    result = get_color_palette(img_url, tolerance, limit)
+    # Make sure no exception is raised and the function handles it
+    assert result is None
 
 def test_negative():
     """Test that negative() generates the correct output and expects the right inputs."""
@@ -65,4 +105,3 @@ def test_negative():
         negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, 0)
         # tolerance cannot be a negative integer
         negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, -10)
-
