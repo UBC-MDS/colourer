@@ -1,4 +1,5 @@
 import pandas as pd
+import requests
 from io import BytesIO
 from extcolors import extract_from_path
 from PIL import Image
