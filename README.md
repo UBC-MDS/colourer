@@ -60,6 +60,10 @@ Interested in contributing? Check out the [contributing guidelines](https://gith
 
 `colourpycker` was created by Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk, and Lauren Zung. It is licensed under the terms of the MIT license.
 
+## Documentation
+
+The official documentation is hosted on Read the Docs: <https://colourpycker.readthedocs.io/en/latest/example.html>
+
 ## Credits
 
 `colourpycker` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
