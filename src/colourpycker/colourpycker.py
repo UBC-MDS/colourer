@@ -1,6 +1,7 @@
 import pandas as pd
 from io import BytesIO
 from extcolors import extract_from_path
+import PIL
 from PIL import Image
 import matplotlib.pyplot as plt
 import extcolors
