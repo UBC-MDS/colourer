@@ -330,7 +330,7 @@ def negative(img_url, num_colours=1, tolerance=0):
 
     # Load image
     try:
-        img = Image.open(requests.get(img_url, stream=True).raw)
+        img = Image.open(BytesIO(requests.get(img_url, stream=True).content))
    
     except PIL.UnidentifiedImageError as ex:
         print("URL has not been read. Try another URL.")
