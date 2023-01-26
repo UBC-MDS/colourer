@@ -5,7 +5,6 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import extcolors
 import altair as alt
-import PIL
 import os
 import re
 import requests
@@ -329,7 +328,13 @@ def negative(img_url, num_colours=1, tolerance=0):
         raise ValueError("'tolerance' must be between 0 and 100.")
 
     # Load image
-    img = Image.open(requests.get(img_url, stream=True).raw)
+    try:
+        img = Image.open(requests.get(img_url, stream=True).raw)
+   
+    except PIL.UnidentifiedImageError as ex:
+        print("URL has not been read. Try another URL.")
+        print(ex)
+        return
 
     # Resize image for processing - 800 pixel maximum
     width = 800 / float(img.size[0])
