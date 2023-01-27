@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "colourpycker"
-version = "0.1.0"
+version = "0.0.1"
 description = "A Python package that can be used to extract colours from images for use in data visualization projects."
 authors = ["Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk and Lauren Zung"]
 license = "MIT"
@@ -34,8 +34,7 @@ sphinx-autoapi = "^2.0.1"
 sphinx-rtd-theme = "^1.1.1"
 
 [tool.semantic_release]
-version_variable = "colourpycker/__init__.py:__version__"
-version_source = "commit"
+version_variable = "pyproject.toml:version" # version location
 branch = "main"                             # branch to make releases of
 changelog_file = "CHANGELOG.md"             # changelog file
 build_command = "poetry build"              # build dists
