@@ -97,23 +97,23 @@ def get_color_palette(img_url, tolerance, limit):
     # Send a GET request to the URL and get the image data
     try:
         response = requests.get(img_url, timeout=30)
+
+    except requests.exceptions.ConnectionError:
+        raise Exception(
+            "There seems to be an error accessing the URL and downloading it as an image. Please check the URL and try again."
+        )
+
+    if not response.status_code == 200:
+        raise Exception(response.reason)
+        
+    try:
         image = Image.open(BytesIO(response.content))
 
         if response.status_code != 200:
-            print("Unable to get image from the web url.")
-            return
+            raise Exception("Unable to get image from the web url.")
 
-    except requests.exceptions.ConnectionError as ex:
-        print(
-            "There seems to be an error accessing the URL and downloading it as an image. Please check the URL and try again."
-        )
-        print(ex)
-        return
-
-    except PIL.UnidentifiedImageError as ex:
-        print("The URL may not point to an image. Please check the URL and try again.")
-        print(ex)
-        return
+    except PIL.UnidentifiedImageError:
+        raise Exception("The URL may not point to an image. Please check the URL and try again.")
 
     image.thumbnail((resize_large_img, resize_large_img))
     image.name = temp_image_name
@@ -332,10 +332,8 @@ def negative(img_url, num_colours=1, tolerance=0):
     try:
         img = Image.open(BytesIO(requests.get(img_url, stream=True).content))
    
-    except PIL.UnidentifiedImageError as ex:
-        print("URL has not been read. Try another URL.")
-        print(ex)
-        return
+    except PIL.UnidentifiedImageError:
+        raise Exception("URL has not been read. Try another URL.")
 
     # Resize image for processing - 800 pixel maximum
     width = 800 / float(img.size[0])
