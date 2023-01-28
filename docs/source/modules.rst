@@ -1,5 +1,5 @@
-src
-===
+colourpycker
+============
 
 .. toctree::
    :maxdepth: 4
