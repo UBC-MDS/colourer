@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "colourpycker"
-version = "0.0.4"
+version = "0.0.5"
 description = "A Python package that can be used to extract colours from images for use in data visualization projects."
 authors = ["Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk and Lauren Zung"]
 license = "MIT"
