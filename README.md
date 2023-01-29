@@ -4,7 +4,7 @@
 
 # colourpycker
 
-A Python package that can be used to extract colours from images for use in data visualization projects.
+`colourpycker` is a Python package that can be used to extract colours from images for use in data visualization projects.
 
 ## Overview
 
