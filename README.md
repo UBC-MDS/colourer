@@ -1,3 +1,7 @@
+![ci-cd](https://github.com/UBC-MDS/colourpycker/actions/workflows/ci-cd.yml/badge.svg)
+[![codecov](https://codecov.io/gh/UBC-MDS/colourpycker/branch/main/graph/badge.svg?token=pkGKQ2l0uG)](https://codecov.io/gh/UBC-MDS/colourpycker)
+[![Documentation Status](https://readthedocs.org/projects/colourpycker/badge/?version=latest)](https://colourpycker.readthedocs.io/en/latest/?badge=latest)
+
 # colourpycker
 
 A Python package that can be used to extract colours from images for use in data visualization projects.
