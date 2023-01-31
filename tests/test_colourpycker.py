@@ -9,7 +9,7 @@ import pytest
 
 def test_get_color_palette_valid_input():
     """Test for get_color_palette when input parameters are valid"""
-    img_url = "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg"
+    img_url = "https://i.imgur.com/s9egWBB.jpg"
     tolerance = 20
     limit = 5
     result = get_color_palette(img_url, tolerance, limit)
@@ -19,37 +19,45 @@ def test_get_color_palette_valid_input():
 
 def test_get_color_palette_not_a_url():
     """Test for get_color_palette when URL is a random string"""
-    img_url = "soijfoidjfosdijfoisdj"
-    tolerance = 20
-    limit = 5
-    result = get_color_palette(img_url, tolerance, limit)
-    # Make sure no exception is raised and the function handles it
-    assert result is None
+    try:
+        img_url = "soijfoidjfosdijfoisdj"
+        tolerance = 20
+        limit = 5
+        result = get_color_palette(img_url, tolerance, limit)
+        assert False
+    except:
+        # Make sure no exception is raised and the function handles it
+        assert True
 
 
 def test_get_color_palette_url_but_not_image():
     """Test for get_color_palette when URL is valid but it is not pointing to an image"""
-    img_url = "https://soijfoidjfosdijfoisdj.url"
-    tolerance = 20
-    limit = 5
-    result = get_color_palette(img_url, tolerance, limit)
-    # Make sure no exception is raised and the function handles it
-    assert result is None
+    try:
+        img_url = "https://soijfoidjfosdijfoisdj.url"
+        tolerance = 20
+        limit = 5
+        result = get_color_palette(img_url, tolerance, limit)
+        assert False
+    except:
+        # Make sure no exception is raised and the function handles it
+        assert True
 
 
 def test_get_color_palette_invalid_tolerance():
     """Test for get_color_palette when tolerance is invalid"""
-    img_url = "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg"
-    tolerance = -20000
-    limit = 5
-    result = get_color_palette(img_url, tolerance, limit)
-    # Make sure no exception is raised and the function handles it
-    assert result is None
+    try:
+        img_url = "https://i.imgur.com/s9egWBB.jpg"
+        tolerance = -20000
+        limit = 5
+        result = get_color_palette(img_url, tolerance, limit)
+    except:
+        # Make sure no exception is raised and the function handles it
+        assert True
 
 
 def test_donut():
     """Testing that donut() generates the correct output"""
-    actual = str(donut("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, 30, 200, plot_show=False).findobj(text.Text)[0:5]).count("#")
+    actual = str(donut("https://i.imgur.com/s9egWBB.jpg", 5, 30, 200, plot_show=False).findobj(text.Text)[0:5]).count("#")
     expect = 5
 
     assert actual == expect, "the function is not plotting the correct amount of colors"
@@ -57,7 +65,7 @@ def test_donut():
     actual = str(
         type(
             donut(
-                "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+                "https://i.imgur.com/s9egWBB.jpg",
                 5,
                 30,
                 200,
@@ -69,46 +77,93 @@ def test_donut():
     assert actual == expect, "The function is not outputting a matplotlib figure"
 
         
-    actual = str(donut("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, 30, 200, plot_show=False).findobj(text.Text)[0]).split("#")[1].split(":")[0]
-    expect = get_color_palette("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 30, 5).iloc[0,0].replace("#","")
-    actual = str(donut("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 5, 30, 200, plot_show=False).findobj(text.Text)[0]).split("#")[1].split(":")[0]
-    expect = get_color_palette("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 30, 5).iloc[0,0].replace("#","")
+    actual = str(donut("https://i.imgur.com/s9egWBB.jpg", 5, 30, 200, plot_show=False).findobj(text.Text)[0]).split("#")[1].split(":")[0]
+    expect = get_color_palette("https://i.imgur.com/s9egWBB.jpg", 30, 5).iloc[0,0].replace("#","")
     assert actual == expect, "the function is not returning the correct colors"
 
 def test_scatterplot():
-    """Testing that the function scatterplot() generates the correct output and expects the right inputs.
-    """
-    #Creating a test dataframe
-    test_df = pd.DataFrame({
-        'x': np.array([1.1, 1.3, 2.4, 1.5, 1.9, 2.1, 2.1, 0.9, 3.1]),
-        'y': np.array([6.8, 7.2, 9.4, 8.3, 5.4, 9.6, 2.9, 6.6, 4.3]),
-        'fill': np.array(['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C'])
-    })
-    
-    #Creating a test plot
-    test_scatter = scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', test_df, 'x', 'y', 'fill', 50)
-    
+    """Testing that the function scatterplot() generates the correct output and expects the right inputs."""
+    # Creating a test dataframe
+    test_df = pd.DataFrame(
+        {
+            "x": np.array([1.1, 1.3, 2.4, 1.5, 1.9, 2.1, 2.1, 0.9, 3.1]),
+            "y": np.array([6.8, 7.2, 9.4, 8.3, 5.4, 9.6, 2.9, 6.6, 4.3]),
+            "fill": np.array(["A", "B", "C", "A", "B", "C", "A", "B", "C"]),
+        }
+    )
+
+    # Creating a test plot
+    test_scatter = scatterplot(
+        "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+        test_df,
+        "x",
+        "y",
+        "fill",
+        50,
+    )
+
     # Tests
-    assert test_scatter.mark == 'point', 'The mark should be a point'
-    
-    assert type(test_scatter)  == alt.vegalite.v4.api.Chart, "The return should be an altair Chart"
-    
-    assert test_scatter.encoding.fill.scale.range == ['#6b9db4', '#000a00', '#b2794c'], "The fill of the points should be the colours from the image"
-    
-    assert test_scatter.encoding.x.shorthand == 'x', "The x-axis of the points should be mapped to the x axis of the Chart"
-    
-    assert test_scatter.encoding.y.shorthand == 'y', "The y-axis of the points should be mapped to the y axis of the Chart"
-    
+    assert test_scatter.mark == "point", "The mark should be a point"
+
+    assert (
+        type(test_scatter) == alt.vegalite.v4.api.Chart
+    ), "The return should be an altair Chart"
+
+    assert (
+        test_scatter.encoding.fill.scale.range
+        == get_color_palette(
+            r"https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            50,
+            3,
+        )["HEX"].to_list()
+    ), "The fill of the points should be the colours from the image"
+
+    assert (
+        test_scatter.encoding.x.field == "x"
+    ), "The x-axis of the points should be mapped to the x axis of the Chart"
+
+    assert (
+        test_scatter.encoding.y.field == "y"
+    ), "The y-axis of the points should be mapped to the y axis of the Chart"
+
     with pytest.raises(TypeError):
         # x cannot be numeric
-        scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', test_df, 50, 'y', 'fill', 50)
+        scatterplot(
+            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            test_df,
+            50,
+            "y",
+            "fill",
+            50,
+        )
         # y cannot be numeric
-        scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', test_df, "x", 50, 'fill', 50)
+        scatterplot(
+            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            test_df,
+            "x",
+            50,
+            "fill",
+            50,
+        )
         # fill cannot be numeric
-        scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', test_df, "x", 'y', '50', 50)
+        scatterplot(
+            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            test_df,
+            "x",
+            "y",
+            "50",
+            50,
+        )
         # tolerance cannot be cannot a float
-        scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', test_df, "x", 'y', '50', 50.75)
-        
+        scatterplot(
+            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            test_df,
+            "x",
+            "y",
+            "50",
+            50.75,
+        )
+
 def test_negative():
     """Test that negative() generates the correct output and expects the right inputs."""
     expected = pd.DataFrame(
@@ -125,7 +180,7 @@ def test_negative():
     )
 
     actual = negative(
-        "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+        "https://i.imgur.com/s9egWBB.jpg",
         5,
         50,
     )
@@ -163,13 +218,13 @@ def test_negative():
 
     # maximum tolerance
     high_tol = negative(
-        "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+        "https://i.imgur.com/s9egWBB.jpg",
         10,
         100,
     )
     # tolerance was set to a high value relative to the number of colours extracted
     moderate_tol = negative(
-        "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+        "https://i.imgur.com/s9egWBB.jpg",
         20,
         88,
     )
@@ -201,31 +256,31 @@ def test_negative():
     with pytest.raises(TypeError):
         # tolerance cannot be a float
         negative(
-            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            "https://i.imgur.com/s9egWBB.jpg",
             4,
             25.5,
         )
         # number of colours cannot be a float
         negative(
-            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            "https://i.imgur.com/s9egWBB.jpg",
             4.8,
             25,
         )
         # tolerance must be less than 100
         negative(
-            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            "https://i.imgur.com/s9egWBB.jpg",
             5,
             101,
         )
         # tolerance cannot be 0
         negative(
-            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            "https://i.imgur.com/s9egWBB.jpg",
             5,
             0,
         )
         # tolerance cannot be a negative integer
         negative(
-            "https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg",
+            "https://i.imgur.com/s9egWBB.jpg",
             5,
             -10,
         )

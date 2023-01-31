@@ -2,11 +2,11 @@ import pandas as pd
 import requests
 from io import BytesIO
 from extcolors import extract_from_path
+import PIL
 from PIL import Image
 import matplotlib.pyplot as plt
 import extcolors
 import altair as alt
-import PIL
 import os
 import re
 import requests
@@ -83,7 +83,7 @@ def get_color_palette(img_url, tolerance, limit):
 
     Examples
     --------
-    get_color_palette('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 20, 5)
+    get_color_palette('https://i.imgur.com/s9egWBB.jpg', 20, 5)
     """
 
     if not check_param_validity(img_url, tolerance, limit):
@@ -98,23 +98,23 @@ def get_color_palette(img_url, tolerance, limit):
     # Send a GET request to the URL and get the image data
     try:
         response = requests.get(img_url, timeout=30)
+
+    except requests.exceptions.ConnectionError:
+        raise Exception(
+            "There seems to be an error accessing the URL and downloading it as an image. Please check the URL and try again."
+        )
+
+    if not response.status_code == 200:
+        raise Exception(response.reason)
+        
+    try:
         image = Image.open(BytesIO(response.content))
 
         if response.status_code != 200:
-            print("Unable to get image from the web url.")
-            return
+            raise Exception("Unable to get image from the web url.")
 
-    except requests.exceptions.ConnectionError as ex:
-        print(
-            "There seems to be an error accessing the URL and downloading it as an image. Please check the URL and try again."
-        )
-        print(ex)
-        return
-
-    except PIL.UnidentifiedImageError as ex:
-        print("The URL may not point to an image. Please check the URL and try again.")
-        print(ex)
-        return
+    except PIL.UnidentifiedImageError:
+        raise Exception("The URL may not point to an image. Please check the URL and try again.")
 
     image.thumbnail((resize_large_img, resize_large_img))
     image.name = temp_image_name
@@ -170,7 +170,7 @@ def donut(img_url, num_clrs, tolerance, img_size, plot_show=True):
 
     Examples
     --------
-    donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 20, 400)
+    donut('https://i.imgur.com/s9egWBB.jpg', 5, 20, 400)
     """
 
     # get the top 100 colors and their proportion in the image
@@ -249,7 +249,7 @@ def scatterplot(img_url, dataset, x, y, fill, tolerance=50):
 
     Examples
     --------
-    scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
+    scatterplot('https://i.imgur.com/s9egWBB.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
     """
     if not img_url.startswith("https://"):
         raise ValueError("'img_url' must be a link (not a path).")
@@ -312,7 +312,7 @@ def negative(img_url, num_colours=1, tolerance=0):
 
     Examples
     --------
-    >>> negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 3, 20)
+    >>> negative("https://i.imgur.com/s9egWBB.jpg", 3, 20)
     """
     if not img_url.startswith("https://"):
         raise ValueError("'img_url' must be a link (not a path).")
@@ -330,7 +330,11 @@ def negative(img_url, num_colours=1, tolerance=0):
         raise ValueError("'tolerance' must be between 0 and 100.")
 
     # Load image
-    img = Image.open(requests.get(img_url, stream=True).raw)
+    try:
+        img = Image.open(BytesIO(requests.get(img_url, stream=True).content))
+   
+    except PIL.UnidentifiedImageError:
+        raise Exception("URL has not been read. Try another URL.")
 
     # Resize image for processing - 800 pixel maximum
     width = 800 / float(img.size[0])

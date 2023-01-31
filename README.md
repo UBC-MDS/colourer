@@ -1,6 +1,10 @@
+![ci-cd](https://github.com/UBC-MDS/colourpycker/actions/workflows/ci-cd.yml/badge.svg)
+[![codecov](https://codecov.io/gh/UBC-MDS/colourpycker/branch/main/graph/badge.svg?token=pkGKQ2l0uG)](https://codecov.io/gh/UBC-MDS/colourpycker)
+[![Documentation Status](https://readthedocs.org/projects/colourpycker/badge/?version=latest)](https://colourpycker.readthedocs.io/en/latest/?badge=latest)
+
 # colourpycker
 
-A Python package that can be used to extract colours from images for use in data visualization projects.
+`colourpycker` is a Python package that can be used to extract colours from images for use in data visualization projects.
 
 ## Overview
 
@@ -43,16 +47,13 @@ For more examples on how to use `colourpycker`, a Jupyter Notebook can be found 
 ```
 from colourpycker.colourpycker import get_colour_palette, donut, scatterplot, scatterplot, negative, get_color_palette, donut
 
-get_color_palette('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 20, 5)
+get_color_palette('https://i.imgur.com/s9egWBB.jpg', 20, 5)
 
-donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 20, 400)
+donut('https://i.imgur.com/s9egWBB.jpg', 5, 20, 400)
 
-scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
+scatterplot('https://i.imgur.com/s9egWBB.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
 
-get_color_palette('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 20, 5)
-donut('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', 5, 20, 400)
-scatterplot('https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg', penguins, 'bill_length_mm', 'body_mass_g', 'species', 50)
-negative("https://visit.ubc.ca/wp-content/uploads/2019/04/plantrip_header-2800x1000_2x.jpg", 10, 20)
+negative("https://i.imgur.com/s9egWBB.jpg", 10, 20)
 ```
 
 ## Contributing
@@ -62,6 +63,10 @@ Interested in contributing? Check out the [contributing guidelines](https://gith
 ## License
 
 `colourpycker` was created by Shaun Hutchinson, Arjun Radhakrishnan, Alex Taciuk, and Lauren Zung. It is licensed under the terms of the MIT license.
+
+## Documentation
+
+The official documentation is hosted on Read the Docs: <https://colourpycker.readthedocs.io/en/latest/example.html>
 
 ## Credits
 
