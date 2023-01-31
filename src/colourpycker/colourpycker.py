@@ -280,9 +280,9 @@ def scatterplot(img_url, dataset, x, y, fill, tolerance=50):
         alt.Chart(dataset)
         .mark_point()
         .encode(
-            alt.X(field=x),
-            alt.Y(field=y),
-            alt.Fill(field=fill, scale=alt.Scale(range=colours["HEX"].to_list())),
+            alt.X(shorthand=x),
+            alt.Y(shorthand=y),
+            alt.Fill(shorthand=fill, scale=alt.Scale(range=colours["HEX"].to_list())),
         )
     )
     return scatter
