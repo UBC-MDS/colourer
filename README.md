@@ -1,6 +1,9 @@
 ![ci-cd](https://github.com/UBC-MDS/colourpycker/actions/workflows/ci-cd.yml/badge.svg)
 [![codecov](https://codecov.io/gh/UBC-MDS/colourpycker/branch/main/graph/badge.svg?token=pkGKQ2l0uG)](https://codecov.io/gh/UBC-MDS/colourpycker)
 [![Documentation Status](https://readthedocs.org/projects/colourpycker/badge/?version=latest)](https://colourpycker.readthedocs.io/en/latest/?badge=latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+![Python Versions](https://img.shields.io/pypi/pyversions/colourpycker)
 
 # colourpycker
 
